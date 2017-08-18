@@ -1,0 +1,53 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop" 
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:task="http://www.springframework.org/schema/task"      
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd    
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd    
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd    
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd    
+    http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+
+
+    <task:annotation-driven /> <!-- 定时器开关-->
+	<!-- 利率抓取 -->
+	<bean id="rateGatherTask" class="com.mr.datagather.GatherWorker"></bean>
+	<!--<bean id="ValueListTask" class="com.mr.web.controller.RateAction"></bean>-->
+
+	<task:scheduled-tasks>
+		<!-- 获取数据共计71个理财产品昨日数据 目前只有65还在运营-->
+		<task:scheduled ref="rateGatherTask" method="updateTodayFinancialData"  initial-delay="5000" fixed-rate="3600000" />
+
+		<!-- 余额宝抓取 蚂蚁金服 -->
+		<task:scheduled ref="rateGatherTask" method="getContent1" initial-delay="5000" fixed-rate="3600000" />
+		<!-- 信融财富  信存宝	-->
+		<task:scheduled ref="rateGatherTask" method="getContent2"  initial-delay="5000" fixed-rate="3600000" />
+		<!-- 无忧宝  有利网 有企业行政处罚不要
+		<task:scheduled ref="rateGatherTask" method="getContent5" initial-delay="5000" fixed-rate="3600000" />
+		-->
+		<!-- 零活宝-金色人生   零活宝-富盈   零活宝T+0   零活宝-28日聚财  -->
+		<task:scheduled ref="rateGatherTask" method="getContent8" initial-delay="5000" fixed-rate="3600000" />
+
+		<!-- 任我赢  e路同心 -->
+		<task:scheduled ref="rateGatherTask" method="getContent9" initial-delay="5000" fixed-rate="3600000" />
+		<!-- 百度钱包 -->
+		<task:scheduled ref="rateGatherTask" method="getContent10" initial-delay="5000" fixed-rate="3600000" />
+		<!-- 快钱 -->
+		<task:scheduled ref="rateGatherTask" method="getContent11" initial-delay="5000" fixed-rate="3600000" />
+		<!-- 增金宝 国寿安保-->
+		<task:scheduled ref="rateGatherTask" method="getContent12" initial-delay="5000" fixed-rate="3600000" />
+		<task:scheduled ref="rateGatherTask" method="getCapitalFund" initial-delay="5000" fixed-rate="3600000" />
+
+	</task:scheduled-tasks>
+	<!--<task:scheduled-tasks>-->
+		<!--&lt;!&ndash;second minute hour day month weekday&ndash;&gt;-->
+		<!--&lt;!&ndash;<task:scheduled ref="ValueListTask" method="queryData" initial-delay="5000" fixed-rate="3600000"/>&ndash;&gt;-->
+		<!--&lt;!&ndash;<task:scheduled ref="ValueListTask" method="queryList2" initial-delay="5000" fixed-rate="3600000"/>&ndash;&gt;-->
+	<!--</task:scheduled-tasks>-->
+
+</beans> 
